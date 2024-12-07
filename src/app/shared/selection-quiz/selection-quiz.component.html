@@ -1,0 +1,46 @@
+<div
+  class="flex flex-col items-center justify-center bg-black-500"
+  *ngIf="currentQuestion"
+>
+  <mat-card class="p-6 w-[90%]">
+    <mat-card-title>
+      <div class="flex grid grid-cols-2">
+        <span> Score: {{ this.score }} </span>
+        <span class="text-end"> Question {{ currentQuestionIndex + 1 }} </span>
+      </div>
+    </mat-card-title>
+    <mat-card-content>
+      <h2 class="text-xl font-semibold mb-4 text-center text-white">
+        <p [innerHTML]="currentQuestion.question"></p>
+      </h2>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div
+          *ngFor="let choice of currentQuestion.choices; let i = index"
+          class="text-center"
+        >
+          <button
+            class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 active:bg-blue-700 transition-colors"
+            [ngClass]="{
+              'bg-green-500': selectedAnswer === i && isCorrect,
+              'bg-red-500': selectedAnswer === i && !isCorrect,
+              'cursor-not-allowed pointer-events-none': isAnswered
+            }"
+            [disabled]="isAnswered"
+            (click)="checkAnswer(i)"
+          >
+            {{ choice }}
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+    <div *ngIf="isAnswered" class="mt-4 text-center">
+      <button
+        class="bg-indigo-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-600 transition-colors"
+        (click)="nextQuestion()"
+      >
+        Next Question
+      </button>
+    </div>
+  </mat-card>
+</div>
